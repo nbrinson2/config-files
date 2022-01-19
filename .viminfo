@@ -12,7 +12,7 @@
 ~h
 # Command Line History (newest to oldest):
 :wq
-|2,0,1642613345,,"wq"
+|2,0,1642613493,,"wq"
 :wq4
 |2,0,1642612622,,"wq4"
 :q
@@ -38,30 +38,44 @@
 |3,0,3,1,1,0,1642613119,"	git add ."
 
 # File marks:
-'0  20  8  ~/.bashrc
-|4,48,20,8,1642613345,"~/.bashrc"
-'1  19  35  ~/.bashrc
-|4,49,19,35,1642613228,"~/.bashrc"
-'2  19  35  ~/.bashrc
-|4,50,19,35,1642613228,"~/.bashrc"
-'3  21  0  ~/.bashrc
-|4,51,21,0,1642613123,"~/.bashrc"
-'4  15  0  ~/.bashrc
-|4,52,15,0,1642613123,"~/.bashrc"
-'5  20  0  ~/.bashrc
-|4,53,20,0,1642613123,"~/.bashrc"
-'6  15  0  ~/.bashrc
-|4,54,15,0,1642613123,"~/.bashrc"
-'7  10  39  ~/.bashrc
-|4,55,10,39,1642612627,"~/.bashrc"
-'8  9  39  ~/.bashrc
-|4,56,9,39,1642612627,"~/.bashrc"
-'9  10  39  ~/.bashrc
-|4,57,10,39,1642612627,"~/.bashrc"
+'0  2  25  ~/.bashrc
+|4,48,2,25,1642613493,"~/.bashrc"
+'1  21  0  ~/.bashrc
+|4,49,21,0,1642613398,"~/.bashrc"
+'2  21  0  ~/.bashrc
+|4,50,21,0,1642613398,"~/.bashrc"
+'3  20  8  ~/.bashrc
+|4,51,20,8,1642613345,"~/.bashrc"
+'4  20  8  ~/.bashrc
+|4,52,20,8,1642613345,"~/.bashrc"
+'5  20  8  ~/.bashrc
+|4,53,20,8,1642613345,"~/.bashrc"
+'6  20  8  ~/.bashrc
+|4,54,20,8,1642613345,"~/.bashrc"
+'7  19  35  ~/.bashrc
+|4,55,19,35,1642613228,"~/.bashrc"
+'8  19  35  ~/.bashrc
+|4,56,19,35,1642613228,"~/.bashrc"
+'9  19  35  ~/.bashrc
+|4,57,19,35,1642613228,"~/.bashrc"
 
 # Jumplist (newest first):
+-'  2  25  ~/.bashrc
+|4,39,2,25,1642613493,"~/.bashrc"
+-'  21  0  ~/.bashrc
+|4,39,21,0,1642613484,"~/.bashrc"
+-'  21  0  ~/.bashrc
+|4,39,21,0,1642613398,"~/.bashrc"
+-'  20  8  ~/.bashrc
+|4,39,20,8,1642613362,"~/.bashrc"
+-'  20  8  ~/.bashrc
+|4,39,20,8,1642613362,"~/.bashrc"
 -'  20  8  ~/.bashrc
 |4,39,20,8,1642613345,"~/.bashrc"
+-'  19  35  ~/.bashrc
+|4,39,19,35,1642613337,"~/.bashrc"
+-'  19  35  ~/.bashrc
+|4,39,19,35,1642613337,"~/.bashrc"
 -'  19  35  ~/.bashrc
 |4,39,19,35,1642613337,"~/.bashrc"
 -'  19  35  ~/.bashrc
@@ -74,6 +88,14 @@
 |4,39,15,0,1642613123,"~/.bashrc"
 -'  15  0  ~/.bashrc
 |4,39,15,0,1642613123,"~/.bashrc"
+-'  15  0  ~/.bashrc
+|4,39,15,0,1642613123,"~/.bashrc"
+-'  15  0  ~/.bashrc
+|4,39,15,0,1642613123,"~/.bashrc"
+-'  10  39  ~/.bashrc
+|4,39,10,39,1642612926,"~/.bashrc"
+-'  10  39  ~/.bashrc
+|4,39,10,39,1642612926,"~/.bashrc"
 -'  10  39  ~/.bashrc
 |4,39,10,39,1642612926,"~/.bashrc"
 -'  10  39  ~/.bashrc
@@ -86,6 +108,10 @@
 |4,39,9,39,1642612627,"~/.bashrc"
 -'  9  39  ~/.bashrc
 |4,39,9,39,1642612627,"~/.bashrc"
+-'  9  39  ~/.bashrc
+|4,39,9,39,1642612627,"~/.bashrc"
+-'  9  39  ~/.bashrc
+|4,39,9,39,1642612627,"~/.bashrc"
 -'  5  50  ~/.bashrc
 |4,39,5,50,1642611908,"~/.bashrc"
 -'  5  50  ~/.bashrc
@@ -94,180 +120,154 @@
 |4,39,5,50,1642611908,"~/.bashrc"
 -'  5  50  ~/.bashrc
 |4,39,5,50,1642611908,"~/.bashrc"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  ~/.bash
-|4,39,1,0,1642611903,"~/.bash"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
--'  1  0  /c/workspace/config-files/.bashrc
-|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
 -'  5  50  ~/.bashrc
-|4,39,5,50,1642611754,"~/.bashrc"
+|4,39,5,50,1642611908,"~/.bashrc"
 -'  5  50  ~/.bashrc
-|4,39,5,50,1642611754,"~/.bashrc"
--'  5  50  ~/.bashrc
-|4,39,5,50,1642611754,"~/.bashrc"
--'  5  50  ~/.bashrc
-|4,39,5,50,1642611754,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611700,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611700,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611700,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611700,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611700,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611700,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611700,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611700,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611628,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611628,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611628,"~/.bashrc"
--'  3  30  ~/.bashrc
-|4,39,3,30,1642611628,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  ~/.bashrc
-|4,39,1,0,1642611549,"~/.bashrc"
--'  1  0  /c/workspace/.bashrc
-|4,39,1,0,1642609807,"/c/workspace/.bashrc"
--'  1  0  /c/workspace/.bashrc
-|4,39,1,0,1642609807,"/c/workspace/.bashrc"
--'  1  0  /c/workspace/.bashrc
-|4,39,1,0,1642609807,"/c/workspace/.bashrc"
--'  1  0  /c/workspace/.bashrc
-|4,39,1,0,1642609807,"/c/workspace/.bashrc"
--'  1  0  /c/workspace/.bashrc
-|4,39,1,0,1642609807,"/c/workspace/.bashrc"
--'  1  0  /c/workspace/.bashrc
-|4,39,1,0,1642609807,"/c/workspace/.bashrc"
--'  1  0  /c/workspace/.bashrc
-|4,39,1,0,1642609807,"/c/workspace/.bashrc"
+|4,39,5,50,1642611908,"~/.bashrc"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  ~/.bash
+|4,39,1,0,1642611903,"~/.bash"
+-'  1  0  /c/workspace/config-files/.bashrc
+|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
+-'  1  0  /c/workspace/config-files/.bashrc
+|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
+-'  1  0  /c/workspace/config-files/.bashrc
+|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
+-'  1  0  /c/workspace/config-files/.bashrc
+|4,39,1,0,1642611893,"/c/workspace/config-files/.bashrc"
 
 # History of marks within files (newest to oldest):
 
 > ~/.bashrc
-	*	1642613344	0
-	"	20	8
-	^	20	9
-	.	20	8
+	*	1642613491	0
+	"	2	25
+	^	2	26
+	.	2	25
 	+	2	18
 	+	8	6
 	+	3	30
@@ -286,6 +286,7 @@
 	+	21	0
 	+	19	35
 	+	20	8
+	+	2	25
 
 > ~/.bash
 	*	1642611902	0

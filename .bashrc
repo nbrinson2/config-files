@@ -1,5 +1,5 @@
 #Navigation
-alias ls="ls -altr"
+alias ls="ls -altr --color"
 alias source="source ~/.bashrc"
 alias work="cd /c/workspace"
 alias sb="cd /c/workspace/sportsbiz/deepsportreact"
