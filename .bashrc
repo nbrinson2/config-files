@@ -17,4 +17,5 @@ function update-config-repo {
 
 	git add .
 	git commit -m "update config files"
+	git push
 }
