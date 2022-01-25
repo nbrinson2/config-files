@@ -1,12 +1,14 @@
 #Navigation
 alias ls="ls -altr --color"
 alias source="source ~/.bashrc"
-alias work="cd /c/workspace"
-alias sb="cd /c/workspace/sportsbiz/deepsportreact"
+alias work="cdls /c/workspace"
+alias sb="cdls /c/workspace/sportsbiz/deepsportreact"
 alias vimbashrc="vim ~/.bashrc"
 alias ngservesb="node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve"
 
-#Other
+#Functions
+cdls() { cd "$@" && ls; }
+
 update_config_repo() {
 	cp ~/.bashrc /c/workspace/config-files/
 	cp ~/.bash_profile /c/workspace/config-files/
