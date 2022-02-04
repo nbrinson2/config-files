@@ -3,7 +3,7 @@ alias ls="ls -altr --color"
 alias source="source ~/.bashrc"
 alias work="cdls /c/workspace"
 alias sb="cdls /c/workspace/sportsbiz/deepsportreact"
-alias vimbashrc="vim ~/.bashrc"
+alias viba="vim ~/.bashrc"
 alias ngservesb="node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve"
 
 #Functions
