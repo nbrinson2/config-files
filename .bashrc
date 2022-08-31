@@ -16,6 +16,7 @@ alias .2="cd ../../"
 alias .3="cd ../../../"
 alias .4="cd ../../../../"
 alias .5="cd ../../../../../"
+alias cpbash="cp .bashrc ~/"
 
 # Pipe ls command to view large directories
 alias lsl="ls -lrt | less"
@@ -43,7 +44,6 @@ alias mkdir="mkdir -pv"
 
 # Continue download in case of issues
 alias wget="wget -c"
-
 
 
 #Functions
