@@ -1,8 +1,15 @@
+#Constants
+ENV_PATH="/c/workspace/env"
+SCRIPTS_PATH="/Scripts/activate"
+
 #Navigation
 alias ls="ls -altr --color"
 alias source="source ~/.bashrc"
 alias work="cdls /c/workspace"
-alias sb="cdls /c/workspace/sportsbiz/deepsportreact"
+alias sbb="cdls /c/workspace/sportsbiz/deepsportv2/"
+alias sbf="cdls /c/workspace/sportsbiz/deepsportv2/src/main/frontend"
+alias ngservesb="node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve"
+alias crypto="cdls /c/workspace/crypto-noobs-v2/crypto-noobs-v2"
 alias viba="vim ~/.bashrc"
 alias ngservesb="node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve"
 alias pixel="flutter emulators --launch Pixel_2_XL_API_29"
@@ -47,6 +54,22 @@ alias wget="wget -c"
 
 
 #Functions
+act() {
+	. "${ENV_PATH}$1${SCRIPTS_PATH}"
+}
+
+virt() {
+	python -m venv "$1"
+}
+
+grpr() {
+	grep -R "$1" $PWD
+}
+
+react() {
+	npx create-react-app $1
+}
+
 cdls() { cd "$@" && ls; }
 
 assign_new_repo() {
@@ -73,8 +96,6 @@ update_config_repo() {
 	cp ~/.bashrc /c/workspace/config-files/
 	cp ~/.bash_profile /c/workspace/config-files/
 	cp ~/.gitconfig /c/workspace/config-files/
-	cp ~/.viminfo /c/workspace/config-files/
-	cp ~/get-pip.py /c/workspace/config-files/
 
 	cd /c/workspace/config-files
 
@@ -88,18 +109,18 @@ restart_ex() {
 	start explorer.exe
 }
 
-function gitacp () {
+gitacp () {
 	git add .
 	git commit -m "$1"
 	git push
 }
 
-function most () {
+most () {
 history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl |  head -n10
 		
 }
 
-function trash () {
+trash () {
 	if [ -d "~/TrashCan" ] 
 	then
 		mv --force -t ~/TrashCan $1
@@ -110,12 +131,12 @@ function trash () {
 }
 
 
-function mcd () {
+mcd () {
 	mkdir -p $1
 	cd $1
 }
 
-function extract {
+extract() {
  if [ -z "$1" ]; then
     # display usage if no parameters given
     echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"

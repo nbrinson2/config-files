@@ -1,3 +1,7 @@
 [user]
-	email = whataretheodds10@gmail.com
-	name = Nick Brinson
+	email = nickbrinson3@gmail.com
+	name = nbrinson2
+[credential "https://git-codecommit.us-east-1.amazonaws.com"]
+	provider = generic
+[safe]
+	directory = C:/workspace/crypto-noobs-v2
