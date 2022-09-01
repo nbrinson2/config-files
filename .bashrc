@@ -104,6 +104,14 @@ update_config_repo() {
 	git push
 }
 
+update_config_local() {
+	cp /c/workspace/config-files/.bashrc ~/
+	cp /c/workspace/config-files/.bash_profile ~/
+	cp /c/workspace/config-files/.gitconfig ~/
+
+	source
+}
+
 restart_ex() {
 	TASKKILL //F //IM explorer.exe
 	start explorer.exe
