@@ -1,6 +1,7 @@
 #Constants
 ENV_PATH="/c/workspace/env"
 SCRIPTS_PATH="/Scripts/activate"
+DELIM='.'
 
 #Navigation
 alias ls="ls -altr --color"
@@ -54,6 +55,24 @@ alias wget="wget -c"
 
 
 #Functions
+ssh_nbrinson8() {
+	work
+	cd keys/
+	ssh -i "nbrinson8.pem" ubuntu@ec2-3-231-27-20.compute-1.amazonaws.com
+}
+
+split() {
+	IFS='.' read -ra my_array <<< "$1"
+	return "${my_array[0]}"
+}
+
+javab() {
+	javac "$1"
+	
+	IFS='.' read -ra my_array <<< "$1"
+	java "${my_array[0]}"
+}
+
 act() {
 	. "${ENV_PATH}$1${SCRIPTS_PATH}"
 }
