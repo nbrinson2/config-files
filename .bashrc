@@ -79,6 +79,8 @@ act() {
 
 virt() {
 	python -m venv "$1"
+	cd ./"$1"/Scripts/
+	. activate
 }
 
 grpr() {
@@ -199,6 +201,6 @@ extract() {
 fi
 }
 
-BOOBS() {
-	echo "BOOBS"
-}
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
