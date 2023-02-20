@@ -126,6 +126,10 @@ update_config_repo() {
 }
 
 update_config_local() {
+	cd /c/workspace/config-files
+	
+	git pull
+	
 	cp /c/workspace/config-files/.bashrc ~/
 	cp /c/workspace/config-files/.bash_profile ~/
 	cp /c/workspace/config-files/.gitconfig ~/
