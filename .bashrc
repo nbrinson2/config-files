@@ -25,6 +25,9 @@ alias .3="cd ../../../"
 alias .4="cd ../../../../"
 alias .5="cd ../../../../../"
 alias cpbash="cp .bashrc ~/"
+alias keygen="ssh-keygen -y -e -f nbrinson8.pem"
+alias cutpath="pwd | cut -d '/' -f ${1}"
+alias sam="/c/Program\ Files/Amazon/AWSSAMCLI/bin/sam.cmd"
 
 # Pipe ls command to view large directories
 alias lsl="ls -lrt | less"
@@ -58,7 +61,7 @@ alias wget="wget -c"
 ssh_nbrinson8() {
 	work
 	cd keys/
-	ssh -i "nbrinson8.pem" ubuntu@ec2-3-231-27-20.compute-1.amazonaws.com
+	ssh -i "nbrinson802.pem" ubuntu@ec2-54-237-75-16.compute-1.amazonaws.com
 }
 
 split() {
@@ -85,6 +88,14 @@ virt() {
 
 grpr() {
 	grep -R "$1" $PWD
+}
+
+grpt() {
+	grep -R "${1}.*${2}\|${2}.*${1}" $PWD
+}
+
+grpw() {
+	grep -R "$1" $(echo "$()")
 }
 
 react() {
