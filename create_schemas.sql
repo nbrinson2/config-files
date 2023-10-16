@@ -1,0 +1,19 @@
+CREATE SCHEMA uialerts;
+CREATE SCHEMA imdata;
+CREATE SCHEMA taxrefdata;
+CREATE SCHEMA idamdata;
+CREATE SCHEMA workflows;
+CREATE SCHEMA foreignproducer;
+CREATE SCHEMA eindata;
+CREATE SCHEMA webmail;
+CREATE SCHEMA formdata;
+CREATE SCHEMA intakedata;
+CREATE SCHEMA claims;
+CREATE SCHEMA myttbauthorization;
+CREATE SCHEMA mockponl;
+CREATE SCHEMA content;
+CREATE SCHEMA messaging;
+CREATE SCHEMA exportcert;
+CREATE SCHEMA itdsdata;
+CREATE SCHEMA banking;
+
