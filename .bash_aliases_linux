@@ -1,0 +1,143 @@
+####### Navigation ########
+alias ls="ls -altr --color"
+alias sl="ls"
+alias viba="vim ~/.bash_aliases"
+alias chrome="start chrome"
+alias histg="history | grep"
+alias rmd="rm -drf"
+alias fhere="find . -name"
+alias ..="cd .."
+alias .2="cd ../../"
+alias src="source ~/.bashrc"
+alias hist="history"
+alias serv="systemctl list-units --type=service"
+alias startplex="sudo service plexmediaserver start"
+alias stopplex="sudo service plexmediaserver stop"
+alias statplex="sudo systemctl status plexmediaserver"
+alias i="sudo apt install"
+alias e="vim"
+alias wtr="curl wttr.in"
+alias st="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -"
+alias xo="xdg-open"
+alias work="cd ~/workspace"
+alias crypto="cd ~/workspace/crypto-noobs-v2/crypto-noobs-v2"
+alias token="http POST :8080/token --auth nbrinson:password -v"
+alias pbcopy="xclip -selection clipboard"
+alias pbpaste="xclip -selection clipboard -o"
+
+# Display number of lines for each file in a directory
+alias line="wc -l `find . -type f`"
+
+# Pipe ls command to view large directories
+alias lsl="ls -lrt | less"
+
+# Create and list any necessary parent directories
+alias mkdir="mkdir -pv"
+
+# Sort by file size
+alias lf="ls --human-readable --size -1 -S --classify"
+
+# Number of files in directory
+alias count="find . -type f | wc -l"
+
+# Copy with progress bar
+alias cpv="rsync -ah --info=progress2"
+
+# Memory allocation
+# alias du="du -ach | sort -h"
+
+######## FUNCTIONS #########
+
+# Test local host home page with bearer token
+bear() {
+	http :8080 "Authorization: Bearer ${1}"
+}
+
+# Generate public and private pem keys
+genkey() {
+	openssl genrsa -out keypair.pem 2048
+	openssl rsa -in keypair.pem -pubout -out public.pem
+	openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
+	rm keypair.pem
+}
+
+# Unmount and mount developer HDD under plex user
+connrost() {
+	cd ~/workspace/keys
+	ssh -i "nbrinson802.pem" ubuntu@ec2-54-144-154-183.compute-1.amazonaws.com
+}
+
+plexmount() {
+	umount /media/nbrinson2/all_backups
+	sudo mount -o gid=999,uid=999 /dev/sdc1 /media/plex/developer
+}
+
+# Git checkout to new branch
+check() {
+	git checkout "$1"
+}
+
+# Move file to Google Drive Receipt folder
+gmove() {
+	cp ~/Downloads/"${1}"
+}
+
+# Display info about bash command
+info() {
+	curl https://cheat.sh/"${1}"
+}
+
+# Search history for string
+hgrep() {
+	history | grep "$1"
+}
+
+# Search all directories recursively
+grpr() {
+	grep -R "$1" $PWD
+}
+
+# Search all directories recursively and return number of occurrences
+grpcnt() {
+	grep -Rc "$1" $PWD | awk -F: '{ sum += $2 } END { print sum }'
+}
+
+# Replace all occurrences of string in every file
+grpreplace() {
+    # Ensure two arguments are provided
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: grpr pattern replacement"
+        return 1
+    fi
+
+    # Search for the pattern in all files and directories under the current directory
+    local files=$(grep -Rl "$1" $PWD)
+
+    # Loop through each file and replace the pattern
+    for file in $files; do
+        sed -i "s/$1/$2/g" "$file"
+    done
+}
+
+
+# Search 2 strings in all directories recursively
+grpt() {
+	grep -R "${1}.*${2}\|${2}.*${1}" $PWD
+}
+
+grpw() {
+	grep -R "$1" $(echo "$()")
+}
+
+# Change directory and list files
+cdl() {
+	cd "$@" && ls;
+}
+
+# Git update repo with commit message
+acp () {
+	git add .
+	git commit -m "$1"
+	git push
+}
+
