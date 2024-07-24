@@ -122,12 +122,38 @@ if ! shopt -oq posix; then
   fi
 fi
 
+
+# set and change java versions
+function setjdk() {  
+  if [ $# -ne 0 ]; then  
+    removeFromPath '/System/Library/Frameworks/JavaVM.framework/Home/bin'  
+    if [ -n "${JAVA_HOME+x}" ]; then  
+      removeFromPath $JAVA_HOME  
+    fi  
+    export JAVA_HOME=`/usr/libexec/java_home -v $@`  
+    export PATH=$JAVA_HOME/bin:$PATH  
+  fi  
+}
+
+removeFromPath () {
+    export PATH=$(echo $PATH | sed -E -e "s;:$1;;" -e "s;$1:?;;")
+}
+
 # Display linux distro info at terminal start
 neofetch
 
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 export EDITOR=vim
-
+export TZ="America/New_York"
 
 # Load Angular CLI autocompletion.
 source <(ng completion script)
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/home/nbrinson2/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+export PATH=$PATH:'/opt/heroku/bin'
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
