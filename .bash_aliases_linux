@@ -6,8 +6,12 @@ alias chrome="start chrome"
 alias histg="history | grep"
 alias rmd="rm -drf"
 alias fhere="find . -name"
-alias ..="cd .."
-alias .2="cd ../../"
+alias cd..="cd .."
+alias cd2="cd ../../"
+alias cd3="cd ../../../"
+alias cd4="cd ../../../../"
+alias cdocs="cd ~/Documents"
+alias cdown="cd ~/Downloads"
 alias src="source ~/.bashrc"
 alias hist="history"
 alias serv="systemctl list-units --type=service"
@@ -20,13 +24,323 @@ alias wtr="curl wttr.in"
 alias st="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -"
 alias xo="xdg-open"
 alias work="cd ~/workspace"
+alias metric="cd ~/workspace/metric5"
 alias crypto="cd ~/workspace/crypto-noobs-v2/crypto-noobs-v2"
 alias token="http POST :8080/token --auth nbrinson:password -v"
 alias pbcopy="xclip -selection clipboard"
 alias pbpaste="xclip -selection clipboard -o"
+alias settings="gnome-control-center"
+alias free="free -h"
+alias top="top -o %MEM"
+alias cronlog="grep CRON /var/log/syslog"
+alias chrome="google-chrome"
+alias docker="sudo docker"
+alias docker-compose="sudo docker-compose"
+alias roster="cd ~/workspace/roster-riddles"
+alias stash="cd ~/workspace/stash"
+alias scripts="cd ~/workspace/scripting"
+alias dkill="docker kill"
+alias dps="docker ps"
+alias spring='/home/nbrinson2/springsource/spring-tool-suite-4-4.21.0.RELEASE-e4.30.0-linux.gtk.x86_64/sts-4.21.0.RELEASE/SpringToolSuite4 &>/dev/null &'
+alias stat='git status'
+
+############################### Metric5 ######################################
+
+alias cdmain="cd ~/workspace/metric5/my-ttb-main"
+alias cdclaims="cd ~/workspace/metric5/claims-management-service-api"
+alias cdauth="cd ~/workspace/metric5/my-ttb-authorization-api"
+alias cdforeign="cd ~/workspace/metric5/foreign-producer-data-management-api"
+alias cdprocess="cd ~/workspace/metric5/process-flow-service-api"
+alias cditds="cd ~/workspace/metric5/itds-data-management-api"
+alias cdlogs="cd ~/workspace/metric5/nohup-logs"
+alias cdims="cd ~/workspace/metric5/IMS2"
+alias cdimdata="cd ~/workspace/metric5/im-data-management-api"
+alias cdidam="cd ~/workspace/metric5/idam-management-api"
+alias cdexport="cd ~/workspace/metric5/export-certificate-data-management-api"
+alias cdform="cd ~/workspace/metric5/form-data-management-api"
+alias cdchem="cd ~/workspace/metric5/chemist-certificate-data-management-api"
+alias cdtax="cd ~/workspace/metric5/tax-ref-data-management-api"
+alias cdpermits="cd ~/workspace/metric5/permits-data-management-api"
+alias mainjava="./mvnw -P-webapp jacoco:prepare-agent-integration verify jacoco:report"
+alias javatest="./mvnw jacoco:prepare-agent-integration verify jacoco:report > /home/nbrinson2/workspace/metric5/nohup-logs/nohup-log-integration-test.log 2>&1"
+#alias dpost="docker-compose -f ~/workspace/metric5/my-ttb-main/src/main/docker/postgresql.yml up -d"
+
+tang() {
+    touch "$1.component.html"
+    touch "$1.component.scss"
+    touch "$1.component.spec.ts"
+    touch "$1.component.ts"
+}
+
+gkey() {
+    ssh-keygen -t ed25519 -C "nick.brinson@metric5.com" -f ~/.ssh/ttb_ed25519
+}
+
+ports() {
+    # Base directory where the services are located
+    local base_dir="/home/nbrinson2/workspace/metric5"
+
+    # Array of service names
+    declare -a services=("banking-management-service-api" "claims-management-service-api" "content-management-api" "export-certificate-data-management-api" "form-data-management-api" "foreign-producer-data-management-api" "idam-management-api" "im-data-management-api" "IMS2" "intake-data-management-api" "intake-token-service-api" "itds-data-management-api" "messaging-data-management-api" "mock-ponl-service-api" "my-ttb-authorization-api" "outbound-email-service-api" "process-flow-service-api" "tax-ref-data-management-api")
+
+    declare -a services_awk=("banking-management-service-api" "content-management-api" "export-certificate-data-management-api" "idam-management-api" "messaging-data-management-api" "mock-ponl-service-api" "my-ttb-authorization-api")
+
+    local temp_file=$(mktemp)
+
+    # Loop through each service
+    for service in "${services[@]}"; do
+        # Define the path to the application-dev.yml file for each service
+        local config_file="${base_dir}/${service}/src/main/resources/config/application-dev.yml"
+
+        # Check if the configuration file exists
+        if [[ -f "$config_file" ]]; then
+            # Use grep to find the line containing 'server.port', then awk to extract the port number
+            local port=$(grep "port: \\$" "$config_file" | awk -F ': ' '{print $2}')
+
+            # Remove possible unwanted characters like ${} and print the result
+            port=${port//\$\{SERVER_PORT:/} # Remove the variable substitution part
+            port=${port//\}/}               # Remove the closing brace
+            port=${port//\'/}               # Remove single quotes if any
+
+            for svc in "${services_awk[@]}"; do
+                if [[ "$service" == "$svc" ]]; then
+                    port=$(awk '/^server:/{flag=1; next} /port:/{if(flag){print $2; exit}}' "$config_file")
+                fi
+            done
+
+            # Echo the result in the desired format
+            echo "$port - $service" >>"$temp_file"
+        else
+            echo "Configuration file for $service not found."
+        fi
+    done
+
+    sort -n "$temp_file" | tail -n +3 | while read line; do
+        echo "${line}"
+    done
+
+    rm "$temp_file"
+}
+
+newbranch() {
+    # Check if a branch name was provided
+    if [ -z "$1" ]; then
+        echo "Please provide a branch name."
+        return 1
+    fi
+
+    git checkout -b "$1"
+
+    # Push the new branch to the remote repository and set up tracking
+    git push -u origin "$1"
+
+    echo "New branch '$1' created and pushed to the remote repository. Tracking set up."
+}
+
+chkmain() {
+    # Check if the 'main' branch exists and checkout if it does
+    if git show-ref --verify --quiet refs/heads/main; then
+        git checkout main
+        echo "Checked out to 'main' branch."
+    # If 'main' doesn't exist, check if 'master' exists and checkout if it does
+    elif git show-ref --verify --quiet refs/heads/master; then
+        git checkout master
+        echo "Checked out to 'master' branch."
+    else
+        echo "Neither 'main' nor 'master' branch exists in this repository."
+    fi
+}
+
+gstat() {
+    local parent_dir=~/workspace/metric5
+
+    # Check if the parent directory exists
+    if [[ ! -d "$parent_dir" ]]; then
+        echo "The directory $parent_dir does not exist."
+        return 1
+    fi
+
+    # Print table header
+    printf "%-42s  %-15s  %-20s\n" "Folder Name" "Branch Name" "Status"
+    printf "%s\n" "--------------------------------------------------------------------------------"
+
+    # Iterate over each subdirectory in the parent directory
+    for dir in "$parent_dir"/*; do
+        # Check if the directory is a git repository
+        if [[ -d "$dir/.git" ]]; then
+            # Navigate to the directory
+            cd "$dir"
+
+            # Extract the branch name
+            local branch_name=$(git rev-parse --abbrev-ref HEAD)
+
+            # Check for changes
+            local status=$(git status --porcelain)
+            if [[ -z "$status" ]]; then
+                status="Clean"
+            else
+                status="Changes present"
+            fi
+
+            # Print the directory name, branch name, and status in table format
+            printf "%-42s  %-15s  %-20s\n" "$(basename "$dir")" "$branch_name" "$status"
+
+            # Go back to the original directory
+            cd - >/dev/null
+        fi
+    done
+}
+
+testfile() {
+    if [[ "$1" == *spec* ]]; then
+        ng test --test-path-pattern="$1" -i --run-in-band --log-heap-usage --detect-open-handles --coverage
+    elif [[ "$1" == *IT ]] || [[ "$1" == *IT#* ]]; then
+        COMMAND="./mvnw jacoco:prepare-agent-integration verify -Dit.test="$1" jacoco:report > /home/nbrinson2/workspace/metric5/nohup-logs/nohup-log-integration-test.log 2>&1"
+        echo $COMMAND
+        eval $COMMAND
+    else
+        ./mvnw -Dtest="$1" test >/home/nbrinson2/workspace/metric5/nohup-logs/nohup-log-java-test.log 2>&1
+    fi
+}
+
+sbran() {
+    main_directory="~/workspace/metric5"
+
+    # Loop through all directories in the main directory
+    for dir in "$main_directory"/*; do
+        if [ -d "$dir" ]; then
+            # Change into the directory
+            cd "$dir" || continue
+
+            # Check if the directory is a Git repository
+            if git rev-parse --git-dir >/dev/null 2>&1; then
+                # Get the current Git branch name
+                branch=$(git branch --show-current)
+                echo "$(basename "$dir") - $branch"
+            else
+                echo "$(basename "$dir") - Not a Git repository"
+            fi
+
+            # Change back to the main directory
+            cd "$main_directory" || exit
+        fi
+    done
+}
+
+dpost() {
+    # Define the file path
+    FILE_PATH=~/workspace/metric5/my-ttb-main/src/main/docker/postgresql.yml
+
+    # Step 1: Add the command to line 6
+    sed -i '6s/^/    command: postgres -c '\''max_connections=500'\''\n/' "$FILE_PATH"
+
+    # Step 2: Run the Docker compose command
+    docker-compose -f "$FILE_PATH" up -d
+    sleep 3
+
+    # Step 3: Remove the command from line 6
+    sed -i '6d' "$FILE_PATH"
+}
+
+res() {
+    local service=$1
+    local full_service_name
+    local pid
+    local new_pid
+
+    # Mapping short names to full service names
+    case $service in
+    bank) full_service_name="banking-management-service-api" ;;
+    claims) full_service_name="claims-management-service-api" ;;
+    content) full_service_name="content-management-api" ;;
+    export) full_service_name="export-certificate-data-management-api" ;;
+    foreign) full_service_name="foreign-producer-data-management-api" ;;
+    form) full_service_name="form-data-management-api" ;;
+    idam) full_service_name="idam-management-api" ;;
+    imdata) full_service_name="im-data-management-api" ;;
+    ims) full_service_name="IMS2" ;;
+    itds) full_service_name="itds-data-management-api" ;;
+    messaging) full_service_name="messaging-data-management-api" ;;
+    auth) full_service_name="my-ttb-authorization-api" ;;
+    outbound) full_service_name="outbound-email-service-api" ;;
+    process) full_service_name="process-flow-service-api" ;;
+    tax) full_service_name="tax-ref-data-management-api" ;;
+    main) full_service_name="my-ttb-main" ;;
+    angular) full_service_name="my-ttb-main" ;;
+    *)
+        echo "Invalid service name: $service"
+        return 1
+        ;;
+    esac
+
+    # Find service
+    if [ "$service" = "angular" ]; then
+        # Find the PID for the angular server that has been running the longest
+        pid=$(ps aux | grep "[n]g serve --hmr" | sort -rk10,10 | awk 'NR==1{print $2}')
+    else
+        pid=$(grep "$full_service_name" ~/workspace/metric5/running_services.log | awk '{print $1}')
+    fi
+
+    # Kill service
+    if [ ! -z "$pid" ]; then
+        kill "$pid"
+        echo "Service $full_service_name with PID $pid has been killed."
+    else
+        echo "Service $full_service_name not found."
+    fi
+
+    # Wait a bit for the service to fully stop
+    sleep 2
+
+    cd ~/workspace/metric5/"$full_service_name" || exit
+
+    # Start service
+    if [ "$full_service_name" = "IMS2" ]; then
+        echo "Starting $full_service_name (special config) in the background..."
+        nohup ./mvnw -s ~/workspace/metric5/IMS2/settings.xml &>~/workspace/metric5/nohup-logs/nohup-log-$full_service_name 2>&1 &
+    elif [ "$service" = "angular" ]; then
+        echo "Starting angular server in the background..."
+        npm start >~/workspace/metric5/nohup-logs/nohup-log-angular 2>&1 &
+    else
+        echo "Starting $full_service_name in the background..."
+        nohup ./mvnw &>~/workspace/metric5/nohup-logs/nohup-log-$full_service_name 2>&1 &
+    fi
+
+    # Wait for the service to start
+    sleep 2
+
+    if [ "$service" = "angular" ]; then
+        # Find the PID for the angular server that has been running the longest
+        new_pid=$(ps aux | grep "[n]g serve --hmr" | sort -rk10,10 | awk 'NR==1{print $2}')
+        echo "Angular server started with PID - $new_pid."
+    else
+        new_pid=$!
+    fi
+
+    # Update full service name for angular in the log
+    if [ "$service" = "angular" ]; then
+        full_service_name="angular-server"
+    fi
+
+    # Check if the service exists in the log file
+    if grep -q "$full_service_name" ~/workspace/metric5/running_services.log; then
+        # Update the running_services.log with the new PID if service exists
+        sed -i "s/^.*$full_service_name \((.*)\)$/$new_pid - $full_service_name \1/" ~/workspace/metric5/running_services.log
+        echo "Updated $full_service_name with new PID $new_pid in running_services.log."
+    else
+        # Retrieve the current Git branch name
+        current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+        # Add the new service in the specified format if not found
+        echo "$new_pid - $full_service_name (${current_branch})" >>~/workspace/metric5/running_services.log
+        echo "Added $full_service_name with PID $new_pid to running_services.log."
+    fi
+}
+
+###########################################################################################
 
 # Display number of lines for each file in a directory
-alias line="wc -l `find . -type f`"
+alias line="wc -l $(find . -type f)"
 
 # Pipe ls command to view large directories
 alias lsl="ls -lrt | less"
@@ -38,7 +352,7 @@ alias mkdir="mkdir -pv"
 alias lf="ls --human-readable --size -1 -S --classify"
 
 # Number of files in directory
-alias count="find . -type f | wc -l"
+alias cnt="find . -type f | wc -l"
 
 # Copy with progress bar
 alias cpv="rsync -ah --info=progress2"
@@ -48,58 +362,160 @@ alias cpv="rsync -ah --info=progress2"
 
 ######## FUNCTIONS #########
 
+newrepo() {
+    if [ -z "$1" ]; then
+        echo "Usage: newrepo <repository-name>"
+        return 1
+    fi
+
+    mkdir "$1"
+    cd "$1" || return
+
+    touch README.md
+    git init
+    hub create
+    git add README.md
+    git commit -m "first commit"
+    git remote add origin "git@github.com:nbrinson2/$1.git"
+
+    # Check if the git remote was added successfully before pushing
+    if [ $? -eq 0 ]; then
+        git push -u origin master
+    else
+        echo "Failed to add remote repository."
+        return 1
+    fi
+}
+
 # Test local host home page with bearer token
 bear() {
-	http :8080 "Authorization: Bearer ${1}"
+    http :8080 "Authorization: Bearer ${1}"
 }
 
 # Generate public and private pem keys
 genkey() {
-	openssl genrsa -out keypair.pem 2048
-	openssl rsa -in keypair.pem -pubout -out public.pem
-	openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
-	rm keypair.pem
+    openssl genrsa -out keypair.pem 2048
+    openssl rsa -in keypair.pem -pubout -out public.pem
+    openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
+    rm keypair.pem
+}
+
+# SSH into roster riddles EC2 instance
+connrost() {
+    cd ~/workspace/keys
+    ssh -i "nbrinson802.pem" ubuntu@ec2-54-144-154-183.compute-1.amazonaws.com
 }
 
 # Unmount and mount developer HDD under plex user
-connrost() {
-	cd ~/workspace/keys
-	ssh -i "nbrinson802.pem" ubuntu@ec2-54-144-154-183.compute-1.amazonaws.com
-}
-
 plexmount() {
-	umount /media/nbrinson2/all_backups
-	sudo mount -o gid=999,uid=999 /dev/sdc1 /media/plex/developer
+    umount /media/nbrinson2/all_backups
+    sudo mount -o gid=999,uid=999 /dev/sdc1 /media/plex/developer
 }
 
 # Git checkout to new branch
 check() {
-	git checkout "$1"
+    git checkout "$1"
 }
 
 # Move file to Google Drive Receipt folder
 gmove() {
-	cp ~/Downloads/"${1}"
+    cp ~/Downloads/"${1}"
 }
 
 # Display info about bash command
 info() {
-	curl https://cheat.sh/"${1}"
+    curl https://cheat.sh/"${1}"
 }
 
 # Search history for string
 hgrep() {
-	history | grep "$1"
+    history | grep "$1"
 }
 
 # Search all directories recursively
 grpr() {
-	grep -R "$1" $PWD
+    grep -R "$1" $PWD
+}
+
+# Search all directories recursively and exclude given file types and directories
+grpx() {
+    local pattern="$1"
+    shift
+    local cmd="grep -R '$pattern' $PWD"
+    for exclude in "$@"; do
+        cmd="$cmd --exclude='$exclude' --exclude-dir='$exclude'"
+    done
+    eval "$cmd"
+}
+
+# Search all directories recursively and include given file types and directories
+grpi() {
+    local pattern=""
+    local includes=()
+    local use_defaults=false
+
+    # Parse arguments
+    while [[ "$1" != "" ]]; do
+        case $1 in
+        -d | --default)
+            use_defaults=true
+            ;;
+        *)
+            if [ -z "$pattern" ]; then
+                pattern="$1"
+            else
+                includes+=("$1")
+            fi
+            ;;
+        esac
+        shift
+    done
+
+    local cmd="grep -Rn '$pattern'"
+
+    # Add include patterns and directories to the command
+    for include in "${includes[@]}"; do
+        cmd="$cmd --include='$include'"
+    done
+
+    # Add default include patterns if the flag is set
+    if [ "$use_defaults" = true ]; then
+        cmd="$cmd --include='*.ts' --include='*.html'"
+    fi
+
+    # Execute the command within the current directory
+    eval "$cmd ."
+}
+
+fin() {
+    local pattern="$1"
+    shift
+    local includes=("$@") # Store all the include patterns and directories
+    local cmd="find . -type f"
+
+    # Add include patterns to the find command
+    if [ ${#includes[@]} -eq 0 ]; then
+        # If no includes are specified, default to *.ts and *.html
+        cmd="$cmd \( -name '*.ts' -o -name '*.html' \)"
+    else
+        # Add specified include patterns
+        cmd="$cmd \( -false"
+        for include in "${includes[@]}"; do
+            cmd="$cmd -o -name '$include'"
+        done
+        cmd="$cmd \)"
+    fi
+
+    # Append -exec to execute grep on the found files
+    cmd="$cmd -exec grep -H '$pattern' {} +"
+
+    # Execute the command
+    eval "$cmd"
 }
 
 # Search all directories recursively and return number of occurrences
 grpcnt() {
-	grep -Rc "$1" $PWD | awk -F: '{ sum += $2 } END { print sum }'
+    grep -Rc "$1" $PWD | awk -F: '{ sum += $2 } END { print sum }'
 }
 
 # Replace all occurrences of string in every file
@@ -119,25 +535,171 @@ grpreplace() {
     done
 }
 
-
 # Search 2 strings in all directories recursively
 grpt() {
-	grep -R "${1}.*${2}\|${2}.*${1}" $PWD
+    grep -R "${1}.*${2}\|${2}.*${1}" $PWD
 }
 
 grpw() {
-	grep -R "$1" $(echo "$()")
+    grep -R "$1" $(echo "$()")
 }
 
 # Change directory and list files
 cdl() {
-	cd "$@" && ls;
+    cd "$@" && ls
 }
 
 # Git update repo with commit message
-acp () {
-	git add .
-	git commit -m "$1"
-	git push
+acp() {
+    git add .
+    git commit -m "$1"
+    git push
 }
 
+# Create a shell script and add execute functionality
+tx() {
+    local filename="$1" # Take the first argument as the filename
+
+    touch "$filename"
+
+    # Check if file extension is .sh
+    if [[ "$filename" == *.sh ]]; then
+        chmod +x "$filename"
+    fi
+}
+
+# Initialize a new git repo locally and push it to remote
+assign_new_repo() {
+    git init -b master
+    git add . && git commit -m "initial commit"
+    git remote add origin $1
+    git remote -v
+    echo "Does the URL match your new repo?"
+    read -n 1 -p "Y or N: " userinput
+    if [ "$userinput" = "Y" ]; then
+        git push origin master
+    elif [ "$userinput" = "N" ]; then
+        echo "Deinitializing git"
+        rm -fr .git
+    else
+        echo "You have entered an invalid selection!!!"
+        echo "Please try again"
+        echo "Deinitializing git"
+        rm -fr .git
+    fi
+}
+
+# Update git config repo with linux config files
+update_config_repo() {
+    cp ~/.bashrc ~/workspace/config-files/.bashrc_linux
+	cp ~/.bash_aliases ~/workspace/config-files/.bash_aliases_linux
+    cp ~/.bash_profile ~/workspace/config-files/.bash_profile_linux
+    cp ~/.inputrc ~/workspace/config-files/.inputrc_linux
+    cp ~/.gitconfig ~/workspace/config-files/
+
+    cd ~/workspace/config-files
+
+    git add .
+    git commit -m "update config files"
+    git push
+}
+
+# Update local linux config files
+update_config_local() {
+    cd ~/workspace/config-files
+
+    git pull
+
+    cp ~/workspace/config-files/.bashrc_linux ~/.bashrc
+    cp ~/workspace/config-files/.bash_profile_linux ~/.bash_profile
+    cp ~/workspace/config-files/.inputrc_linux ~/.inputrc
+    cp ~/workspace/config-files/.gitconfig ~/
+
+    src
+}
+
+# Display the top 10 most frequently used commands from the command-line history
+most() {
+    history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
+}
+
+count_lines() {
+    # Default values
+    local parent_directory="."
+    local include_extensions=("ts" "html")
+    local exclude_extensions=("spec*")
+    local exclude_directories=("node_modules" "target")
+    local result_count=50
+
+    # User inputs
+    echo "Enter the path to the parent directory (default: $parent_directory):"
+    read -r input
+    if [ -n "$input" ]; then
+        parent_directory=$input
+    fi
+
+    echo "Enter the file extensions to include (e.g., txt md, default: ${include_extensions[*]}):"
+    read -r -a input
+    if [ ${#input[@]} -ne 0 ]; then
+        include_extensions=("${input[@]}")
+    fi
+
+    echo "Enter the file extensions to exclude (e.g., log bak, default: ${exclude_extensions[*]}):"
+    read -r -a input
+    if [ ${#input[@]} -ne 0 ]; then
+        exclude_extensions=("${input[@]}")
+    fi
+
+    echo "Enter the directories to exclude (relative to the parent, e.g., dir1 dir2, default: ${exclude_directories[*]}):"
+    read -r -a input
+    if [ ${#input[@]} -ne 0 ]; then
+        exclude_directories=("${input[@]}")
+    fi
+
+    echo "Enter the number of results to display (default: $result_count):"
+    read -r input
+    if [ -n "$input" ]; then
+        result_count=$input
+    fi
+
+    # Constructing the find command
+    local find_cmd="find $parent_directory -type d \\( "
+
+    # Exclude directories
+    for i in "${!exclude_directories[@]}"; do
+        find_cmd+="-name '${exclude_directories[i]}'"
+        # If not the last element, add " -o "
+        if [[ $i -ne $((${#exclude_directories[@]} - 1)) ]]; then
+            find_cmd+=" -o "
+        fi
+    done
+    find_cmd+=" \\) -prune"
+
+    # Include extensions
+    find_cmd+=" -o -type f \\( \\( "
+    for i in "${!include_extensions[@]}"; do
+        find_cmd+="-name \"*.${include_extensions[i]}\""
+        # If not the last element, add " -o "
+        if [[ $i -ne $((${#include_extensions[@]} - 1)) ]]; then
+            find_cmd+=" -o "
+        fi
+    done
+    find_cmd+=" \\) "
+
+    # Exclude extensions
+    for ext in "${exclude_extensions[@]}"; do
+        find_cmd+="-and ! -name \"*.$ext\" "
+    done
+    find_cmd+=" \\)"
+
+    find_cmd+=" -exec wc -l {} + | sort -nr | head -n $result_count"
+    # Echo the complete command
+    echo "Running command: $find_cmd"
+
+    # Execute the command, sort, and get the top results
+    local results=$(eval $find_cmd)
+
+    # Echo the results
+    echo "Top $result_count files (by line count):"
+    echo "$results"
+}
