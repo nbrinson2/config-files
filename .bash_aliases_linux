@@ -1,7 +1,7 @@
 ####### Navigation ########
 alias ls="ls -altr --color"
 alias sl="ls"
-alias viba="vim ~/.bash_aliases"
+alias viba="nvim ~/.bash_aliases"
 alias chrome="start chrome"
 alias histg="history | grep"
 alias rmd="rm -drf"
@@ -34,8 +34,6 @@ alias free="free -h"
 alias top="top -o %MEM"
 alias cronlog="grep CRON /var/log/syslog"
 alias chrome="google-chrome"
-alias docker="sudo docker"
-alias docker-compose="sudo docker-compose"
 alias roster="cd ~/workspace/roster-riddles"
 alias stash="cd ~/workspace/stash"
 alias scripts="cd ~/workspace/scripting"
@@ -43,10 +41,14 @@ alias dkill="docker kill"
 alias dps="docker ps"
 alias spring='/home/nbrinson2/springsource/spring-tool-suite-4-4.21.0.RELEASE-e4.30.0-linux.gtk.x86_64/sts-4.21.0.RELEASE/SpringToolSuite4 &>/dev/null &'
 alias stat='git status'
+alias cprec="fc -ln -1 | awk '{\$1=\$1};1' | tee >(xclip -selection clipboard) >(xclip -selection primary)"
+alias slack="/snap/bin/slack"
+alias hour="cd ~/workspace/angular/angular-hour"
 
 ############################### Metric5 ######################################
 
 alias cdmain="cd ~/workspace/metric5/my-ttb-main"
+alias cdmainui="cd ~/workspace/metric5/my-ttb-permits-ui"
 alias cdclaims="cd ~/workspace/metric5/claims-management-service-api"
 alias cdauth="cd ~/workspace/metric5/my-ttb-authorization-api"
 alias cdforeign="cd ~/workspace/metric5/foreign-producer-data-management-api"
@@ -61,16 +63,105 @@ alias cdform="cd ~/workspace/metric5/form-data-management-api"
 alias cdchem="cd ~/workspace/metric5/chemist-certificate-data-management-api"
 alias cdtax="cd ~/workspace/metric5/tax-ref-data-management-api"
 alias cdpermits="cd ~/workspace/metric5/permits-data-management-api"
+alias cdmessaging="cd ~/workspace/metric5/messaging-data-management-api"
+alias cdoutbound="cd ~/workspace/metric5/outbound-email-service-api"
 alias mainjava="./mvnw -P-webapp jacoco:prepare-agent-integration verify jacoco:report"
 alias javatest="./mvnw jacoco:prepare-agent-integration verify jacoco:report > /home/nbrinson2/workspace/metric5/nohup-logs/nohup-log-integration-test.log 2>&1"
 #alias dpost="docker-compose -f ~/workspace/metric5/my-ttb-main/src/main/docker/postgresql.yml up -d"
+alias artemisup="docker compose -f ~/workspace/metric5/my-ttb-main/src/main/docker/activemq.yml up -d"
+alias artemisdown="docker compose -f ~/workspace/metric5/my-ttb-main/src/main/docker/activemq.yml down"
+
+replace_quotes() {
+  local target="$1"
+  # Sed expression to replace: [property]="'value'" with property="value"
+  local sedExpr='s/\[([^]]+)\]=\"'\''([^'\'']+)'\''\"/\1="\2"/g'
+
+  if [ -d "$target" ]; then
+    # Recursively find all .html files in the target directory and all its subdirectories
+    find "$target" -type f -name "*.html" -exec sed -i -E "$sedExpr" {} +
+  elif [ -f "$target" ]; then
+    # Process a single file
+    sed -i -E "$sedExpr" "$target"
+  else
+    echo "Error: $target is not a valid file or directory"
+    return 1
+  fi
+}
 
 tang() {
-    touch "$1.component.html"
-    touch "$1.component.scss"
-    touch "$1.component.spec.ts"
-    touch "$1.component.ts"
+  # Base file name passed as argument (kebab-case)
+  base="$1"
+
+  # Define module file path (adjust if needed)
+  MODULE_FILE="/home/nbrinson2/workspace/metric5/my-ttb-main/src/main/webapp/app/permits/permits.module.ts"
+
+  # Create the component files
+  touch "$base.component.html"
+  touch "$base.component.scss"
+
+  # Convert kebab-case to PascalCase and append "Component"
+  component_class=$(echo "$base" | sed -r 's/(^|-)(\w)/\U\2/g')Component
+
+  # Create the TS file with Angular component boilerplate
+  cat <<EOF > "$base.component.ts"
+import { Component } from "@angular/core";
+
+@Component({
+  selector: 'ttb-$base',
+  templateUrl: './$base.component.html',
+  styleUrls: ['./$base.component.scss'],
+})
+export class $component_class {}
+EOF
+
+  # Create the spec file with Angular test boilerplate
+  cat <<EOF > "$base.component.spec.ts"
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { $component_class } from "./$base.component";
+
+describe('$component_class', () => {
+  let component: $component_class;
+  let fixture: ComponentFixture<$component_class>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [$component_class],
+      imports: [],
+      providers: [],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent($component_class);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+});
+EOF
+
+  # Define the exact import line we want to add
+  import_line="import { $component_class } from 'app/permits/$base/$base.component';"
+
+  # Check if the component is already present anywhere in the module file.
+  if grep -q "$component_class" "$MODULE_FILE"; then
+    echo "$component_class is already present in $MODULE_FILE, skipping update."
+  else
+    # Get the line number of the first occurrence of "@NgModule"
+    ngmodule_line=$(grep -n "@NgModule" "$MODULE_FILE" | head -n1 | cut -d: -f1)
+    
+    # Calculate the line where the import should be inserted (2 lines before)
+    insert_line=$((ngmodule_line - 1))
+    
+    # Insert the import line at the calculated line number
+    sed -i "${insert_line}i\\$import_line" "$MODULE_FILE"
+
+    # Insert the component into the declarations block.
+    # This command searches between 'declarations: [' and the next ']' and inserts the new component before the closing bracket.
+    sed -i "/declarations: \[/,/\],/ s/\(\s*\]\)/    $component_class,\n\1/" "$MODULE_FILE"
+
+    # Similarly, insert the component into the exports block.
+    sed -i "/exports: \[/,/\],/ s/\(\s*\]\)/    $component_class,\n\1/" "$MODULE_FILE"
+  fi
 }
+
 
 gkey() {
     ssh-keygen -t ed25519 -C "nick.brinson@metric5.com" -f ~/.ssh/ttb_ed25519
@@ -232,14 +323,14 @@ dpost() {
     FILE_PATH=~/workspace/metric5/my-ttb-main/src/main/docker/postgresql.yml
 
     # Step 1: Add the command to line 6
-    sed -i '6s/^/    command: postgres -c '\''max_connections=500'\''\n/' "$FILE_PATH"
+    # sed -i '6s/^/    command: postgres -c '\''max_connections=1000'\''\n/' "$FILE_PATH"
 
     # Step 2: Run the Docker compose command
-    docker-compose -f "$FILE_PATH" up -d
-    sleep 3
+    docker compose -f "$FILE_PATH" up -d
+    # sleep 3
 
     # Step 3: Remove the command from line 6
-    sed -i '6d' "$FILE_PATH"
+    # sed -i '6d' "$FILE_PATH"
 }
 
 res() {
@@ -263,6 +354,7 @@ res() {
     messaging) full_service_name="messaging-data-management-api" ;;
     auth) full_service_name="my-ttb-authorization-api" ;;
     outbound) full_service_name="outbound-email-service-api" ;;
+	permits) full_service_name="permits-data-management-api" ;;
     process) full_service_name="process-flow-service-api" ;;
     tax) full_service_name="tax-ref-data-management-api" ;;
     main) full_service_name="my-ttb-main" ;;
@@ -362,6 +454,10 @@ alias cpv="rsync -ah --info=progress2"
 
 ######## FUNCTIONS #########
 
+coin() {
+	python3 coin-investment-checker.py --sheet_url "https://docs.google.com/spreadsheets/d/15kEqOgq7k-_wNhcdcDzwmfQcEZmxglkSQa82lw5iMAA/edit?gid=0#gid=0"
+}
+
 newrepo() {
     if [ -z "$1" ]; then
         echo "Usage: newrepo <repository-name>"
@@ -439,19 +535,8 @@ grpr() {
 
 # Search all directories recursively and exclude given file types and directories
 grpx() {
-    local pattern="$1"
-    shift
-    local cmd="grep -R '$pattern' $PWD"
-    for exclude in "$@"; do
-        cmd="$cmd --exclude='$exclude' --exclude-dir='$exclude'"
-    done
-    eval "$cmd"
-}
-
-# Search all directories recursively and include given file types and directories
-grpi() {
     local pattern=""
-    local includes=()
+    local excludes=()
     local use_defaults=false
 
     # Parse arguments
@@ -464,7 +549,7 @@ grpi() {
             if [ -z "$pattern" ]; then
                 pattern="$1"
             else
-                includes+=("$1")
+                excludes+=("$1")
             fi
             ;;
         esac
@@ -473,7 +558,95 @@ grpi() {
 
     local cmd="grep -Rn '$pattern'"
 
-    # Add include patterns and directories to the command
+    # Add exclude patterns and directories to the command
+    for exclude in "${excludes[@]}"; do
+        cmd="$cmd --exclude='$exclude' --exclude-dir='$exclude'"
+    done
+
+    # Add default exclude patterns if the flag is set
+    if [ "$use_defaults" = true ]; then
+        cmd="$cmd --exclude-dir='target' --exclude-dir='node_modules'"
+    fi
+
+    # Execute the command within the current directory
+    eval "$cmd ."
+}
+
+# Search all directories recursively for files containing multiple strings
+grpi() {
+    local patterns=()
+    local includes=()
+    local use_defaults=false
+    local exact_match=false
+
+    # Parse arguments
+    while [[ "$1" != "" ]]; do
+        case $1 in
+        -* )
+            # Handle combined flags (e.g., -de)
+            for (( i=1; i<${#1}; i++ )); do
+                flag="${1:i:1}"
+                case $flag in
+                d)
+                    use_defaults=true
+                    ;;
+                e)
+                    exact_match=true
+                    ;;
+                p)
+                    shift
+                    patterns+=("$1")
+                    break
+                    ;;
+                *)
+                    echo "Error: Unknown flag -$flag"
+                    return 1
+                    ;;
+                esac
+            done
+            ;;
+        --default)
+            use_defaults=true
+            ;;
+        --pattern)
+            shift
+            patterns+=("$1")
+            ;;
+        --exact)
+            exact_match=true
+            ;;
+        --include=*)
+            includes+=("${1#*=}")
+            ;;
+        *)
+            if [ ${#patterns[@]} -eq 0 ]; then
+                patterns+=("$1")  # Use the first non-flag argument as the default pattern
+            else
+                includes+=("$1")
+            fi
+            ;;
+        esac
+        shift
+    done
+
+    # Ensure at least one pattern is provided
+    if [ ${#patterns[@]} -eq 0 ]; then
+        echo "Error: No search pattern provided."
+        return 1
+    fi
+
+    # Construct the base grep command
+    local cmd="grep -Rl"
+
+    # Add exact match option if the flag is set
+    if [ "$exact_match" = true ]; then
+        cmd="$cmd -w"
+    fi
+
+    # Add the first pattern
+    cmd="$cmd '${patterns[0]}'"
+
+    # Add include patterns to restrict the search scope
     for include in "${includes[@]}"; do
         cmd="$cmd --include='$include'"
     done
@@ -483,8 +656,17 @@ grpi() {
         cmd="$cmd --include='*.ts' --include='*.html'"
     fi
 
-    # Execute the command within the current directory
-    eval "$cmd ."
+    # Add subsequent patterns for logical AND (pipe results)
+    for ((i = 1; i < ${#patterns[@]}; i++)); do
+        cmd="$cmd . | xargs grep -l"
+        if [ "$exact_match" = true ]; then
+            cmd="$cmd -w"
+        fi
+        cmd="$cmd '${patterns[i]}'"
+    done
+
+    # Execute the final command
+    eval "$cmd"
 }
 
 fin() {
