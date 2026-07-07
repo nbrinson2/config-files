@@ -821,6 +821,7 @@ update_config_local() {
 
     git pull
 
+    cp ~/workspace/config-files/.bash_aliases_linux ~/.bash_aliases
     cp ~/workspace/config-files/.bashrc_linux ~/.bashrc
     cp ~/workspace/config-files/.bash_profile_linux ~/.bash_profile
     cp ~/workspace/config-files/.inputrc_linux ~/.inputrc
