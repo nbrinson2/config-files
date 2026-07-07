@@ -1,4 +1,4 @@
-####### Navigation ########
+####### General ########
 alias ls="ls -altr --color"
 alias sl="ls"
 alias viba="nvim ~/.bash_aliases"
@@ -18,7 +18,7 @@ alias serv="systemctl list-units --type=service"
 alias startplex="sudo service plexmediaserver start"
 alias stopplex="sudo service plexmediaserver stop"
 alias statplex="sudo systemctl status plexmediaserver"
-alias i="sudo apt install"
+alias sai="sudo apt install"
 alias e="vim"
 alias wtr="curl wttr.in"
 alias st="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -"
@@ -44,18 +44,25 @@ alias stat='git status'
 alias cprec="fc -ln -1 | awk '{\$1=\$1};1' | tee >(xclip -selection clipboard) >(xclip -selection primary)"
 alias slack="/snap/bin/slack"
 alias hour="cd ~/workspace/angular/angular-hour"
+alias npmreset="rm -rf node_modules package-lock.json && npm install"
+alias tf="testfile"
+
+########### Git #############
+alias gitb='git branch -a --sort=-committerdate'
+alias gitba='git branch -a -v --sort=-committerdate'
 
 ############################### Metric5 ######################################
 
 alias cdmain="cd ~/workspace/metric5/my-ttb-main"
-alias cdmainui="cd ~/workspace/metric5/my-ttb-permits-ui"
+alias cdpermitsui="cd ~/workspace/metric5/my-ttb-permits-ui"
+alias cdchem="cd ~/workspace/metric5/chemist-certificate-data-management-api" 
 alias cdclaims="cd ~/workspace/metric5/claims-management-service-api"
 alias cdauth="cd ~/workspace/metric5/my-ttb-authorization-api"
 alias cdforeign="cd ~/workspace/metric5/foreign-producer-data-management-api"
 alias cdprocess="cd ~/workspace/metric5/process-flow-service-api"
 alias cditds="cd ~/workspace/metric5/itds-data-management-api"
 alias cdlogs="cd ~/workspace/metric5/nohup-logs"
-alias cdims="cd ~/workspace/metric5/IMS2"
+alias cdims="cd ~/workspace/metric5/ims2"
 alias cdimdata="cd ~/workspace/metric5/im-data-management-api"
 alias cdidam="cd ~/workspace/metric5/idam-management-api"
 alias cdexport="cd ~/workspace/metric5/export-certificate-data-management-api"
@@ -65,13 +72,16 @@ alias cdtax="cd ~/workspace/metric5/tax-ref-data-management-api"
 alias cdpermits="cd ~/workspace/metric5/permits-data-management-api"
 alias cdmessaging="cd ~/workspace/metric5/messaging-data-management-api"
 alias cdoutbound="cd ~/workspace/metric5/outbound-email-service-api"
+alias cdintake="cd ~/workspace/metric5/intake-token-service-api"
 alias mainjava="./mvnw -P-webapp jacoco:prepare-agent-integration verify jacoco:report"
 alias javatest="./mvnw jacoco:prepare-agent-integration verify jacoco:report > /home/nbrinson2/workspace/metric5/nohup-logs/nohup-log-integration-test.log 2>&1"
 #alias dpost="docker-compose -f ~/workspace/metric5/my-ttb-main/src/main/docker/postgresql.yml up -d"
 alias artemisup="docker compose -f ~/workspace/metric5/my-ttb-main/src/main/docker/activemq.yml up -d"
 alias artemisdown="docker compose -f ~/workspace/metric5/my-ttb-main/src/main/docker/activemq.yml down"
 
+
 replace_quotes() {
+
   local target="$1"
   # Sed expression to replace: [property]="'value'" with property="value"
   local sedExpr='s/\[([^]]+)\]=\"'\''([^'\'']+)'\''\"/\1="\2"/g'
@@ -283,14 +293,32 @@ gstat() {
 }
 
 testfile() {
-    if [[ "$1" == *spec* ]]; then
-        ng test --test-path-pattern="$1" -i --run-in-band --log-heap-usage --detect-open-handles --coverage
-    elif [[ "$1" == *IT ]] || [[ "$1" == *IT#* ]]; then
-        COMMAND="./mvnw jacoco:prepare-agent-integration verify -Dit.test="$1" jacoco:report > /home/nbrinson2/workspace/metric5/nohup-logs/nohup-log-integration-test.log 2>&1"
-        echo $COMMAND
+    # Join all arguments in case user passes without quotes (handles spaces in paths too)
+    local input="$*"
+
+    # Handle full Java test file paths
+    if [[ "$input" == *.java ]]; then
+        local classname=$(basename "$input" .java)
+        echo "→ Running Java unit test: $classname (output logged)"
+
+        ./mvnw -Dtest="$classname" test > /home/nbrinson2/workspace/metric5/nohup-logs/nohup-log-java-test.log 2>&1
+        return
+    fi
+
+    # Angular spec tests
+    if [[ "$input" == *spec* ]]; then
+        ng test --test-path-pattern="$input" -i --run-in-band --log-heap-usage --detect-open-handles --coverage 
+
+    # Integration Tests
+    elif [[ "$input" == *IT* ]] || [[ "$input" == *IT#* ]]; then
+        COMMAND="./mvnw jacoco:prepare-agent-integration verify -Dit.test=\"$input\" jacoco:report > /home/nbrinson2/workspace/metric5/nohup-logs/nohup-log-integration-test.log 2>&1"
+        echo "$COMMAND"
         eval $COMMAND
+
+    # Regular Java unit test (class name)
     else
-        ./mvnw -Dtest="$1" test >/home/nbrinson2/workspace/metric5/nohup-logs/nohup-log-java-test.log 2>&1
+        echo "→ Running Java unit test: $input (output logged)"
+        ./mvnw -Dtest="$input" test > /home/nbrinson2/workspace/metric5/nohup-logs/nohup-log-java-test.log 2>&1
     fi
 }
 
@@ -342,6 +370,7 @@ res() {
     # Mapping short names to full service names
     case $service in
     bank) full_service_name="banking-management-service-api" ;;
+    chem) full_service_name="chemist-certificate-data-management-api" ;;
     claims) full_service_name="claims-management-service-api" ;;
     content) full_service_name="content-management-api" ;;
     export) full_service_name="export-certificate-data-management-api" ;;
@@ -349,7 +378,7 @@ res() {
     form) full_service_name="form-data-management-api" ;;
     idam) full_service_name="idam-management-api" ;;
     imdata) full_service_name="im-data-management-api" ;;
-    ims) full_service_name="IMS2" ;;
+    ims) full_service_name="ims2" ;;
     itds) full_service_name="itds-data-management-api" ;;
     messaging) full_service_name="messaging-data-management-api" ;;
     auth) full_service_name="my-ttb-authorization-api" ;;

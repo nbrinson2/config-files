@@ -123,16 +123,88 @@ if ! shopt -oq posix; then
 fi
 
 
-# set and change java versions
-function setjdk() {  
-  if [ $# -ne 0 ]; then  
-    removeFromPath '/System/Library/Frameworks/JavaVM.framework/Home/bin'  
-    if [ -n "${JAVA_HOME+x}" ]; then  
-      removeFromPath $JAVA_HOME  
-    fi  
-    export JAVA_HOME=`/usr/libexec/java_home -v $@`  
-    export PATH=$JAVA_HOME/bin:$PATH  
-  fi  
+# Enhanced setjdk function for Linux
+# Supports: java17, java21, zulu21, zulu17, 17, 21, and exact folder names
+setjdk() {
+    if [ $# -ne 1 ]; then
+        echo "Usage: setjdk <version>"
+        echo "Examples:"
+        echo "  setjdk 21       → uses java-21-openjdk-amd64 or zulu-21-amd64"
+        echo "  setjdk java21   → same"
+        echo "  setjdk zulu21   → prefers zulu-21-amd64"
+        echo "  setjdk 17       → uses java-17-openjdk-amd64 or zulu-17-amd64"
+        echo "  setjdk zulu-21-amd64  → exact folder name"
+        echo ""
+        echo "Available JDKs in /usr/lib/jvm:"
+        ls -1 /usr/lib/jvm | grep -E '^(java|openjdk|zulu|temurin|jdk|jdk-)[0-9]+' | sort
+        return 1
+    fi
+
+    local input="$1"
+    local candidate=""
+    local version=""
+
+    # Normalize input to version number
+    case "$input" in
+        java17|jdk17|17)          version="17" ;;
+        java21|jdk21|21)          version="21" ;;
+        zulu17)                   version="17" ; prefer="zulu" ;;
+        zulu21)                   version="21" ; prefer="zulu" ;;
+        *)                        version="$input" ;;
+    esac
+
+    # If it's already a full folder name, use it directly
+    if [[ -d "/usr/lib/jvm/$input" && -x "/usr/lib/jvm/$input/bin/java" ]]; then
+        candidate="/usr/lib/jvm/$input"
+    else
+        # Try preferred (zulu) first if requested
+        if [[ -n "$prefer" && "$prefer" == "zulu" ]]; then
+            if [[ -d "/usr/lib/jvm/zulu-${version}-amd64" ]]; then
+                candidate="/usr/lib/jvm/zulu-${version}-amd64"
+            elif [[ -d "/usr/lib/jvm/zulu${version}-amd64" ]]; then
+                candidate="/usr/lib/jvm/zulu${version}-amd64"
+            fi
+        fi
+
+        # Fall back to standard openjdk naming
+        if [[ -z "$candidate" ]]; then
+            if [[ -d "/usr/lib/jvm/java-${version}-openjdk-amd64" ]]; then
+                candidate="/usr/lib/jvm/java-${version}-openjdk-amd64"
+            elif [[ -d "/usr/lib/jvm/openjdk-${version}" ]]; then
+                candidate="/usr/lib/jvm/openjdk-${version}"
+            elif [[ -d "/usr/lib/jvm/java-${version}.0-openjdk-amd64" ]]; then
+                candidate="/usr/lib/jvm/java-${version}.0-openjdk-amd64"
+            fi
+        fi
+
+        # Last resort: any folder containing the version number
+        if [[ -z "$candidate" ]]; then
+            candidate=$(find /usr/lib/jvm -maxdepth 1 -type d -name "*${version}*" -print | head -n 1)
+            if [[ -n "$candidate" && ! -x "$candidate/bin/java" ]]; then
+                candidate=""
+            fi
+        fi
+    fi
+
+    # Check if we found a valid JDK
+    if [[ -z "$candidate" || ! -x "$candidate/bin/java" ]]; then
+        echo "Error: No valid JDK found for '$input'"
+        echo "Try one of these:"
+        ls -1 /usr/lib/jvm | grep -E 'jdk|java|zulu|openjdk' | grep -E "${version:-[0-9]+}"
+        return 1
+    fi
+
+    # Remove old JAVA_HOME from PATH if it exists
+    if [ -n "${JAVA_HOME+x}" ] && [ -d "$JAVA_HOME" ] && [[ "$PATH" == *"$JAVA_HOME"* ]]; then
+        export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v "^${JAVA_HOME}/bin$" | tr '\n' ':' | sed 's/:$//')
+    fi
+
+    # Set new JAVA_HOME and update PATH
+    export JAVA_HOME="$candidate"
+    export PATH="$JAVA_HOME/bin:$PATH"
+
+    echo "Switched to: $JAVA_HOME"
+    java -version | head -n 2
 }
 
 removeFromPath () {
@@ -140,13 +212,13 @@ removeFromPath () {
 }
 
 # Display linux distro info at terminal start
-neofetch
+# neofetch
 
 export EDITOR=vim
 export TZ="America/New_York"
 
 # Load Angular CLI autocompletion.
-source <(ng completion script)
+# source <(ng completion script)
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/home/nbrinson2/.rd/bin:$PATH"
@@ -164,3 +236,4 @@ if [ -f '/home/nbrinson2/Downloads/google-cloud-sdk/path.bash.inc' ]; then . '/h
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/nbrinson2/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . '/home/nbrinson2/Downloads/google-cloud-sdk/completion.bash.inc'; fi
+
