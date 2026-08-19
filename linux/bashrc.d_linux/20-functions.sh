@@ -337,9 +337,9 @@ update_config_repo() {
     local dest=~/workspace/config-files
     local linux="$dest/linux"
 
-    mkdir -p "$linux"
+    mkdir -p "$linux/bashrc.d_linux"
     cp ~/.bashrc "$linux/.bashrc_linux"
-    cp -a ~/.bashrc.d "$linux/bashrc.d_linux"
+    cp -a ~/.bashrc.d/. "$linux/bashrc.d_linux/"
     [ -f ~/.bash_profile ] && cp ~/.bash_profile "$linux/.bash_profile_linux"
     [ -f ~/.inputrc ] && cp ~/.inputrc "$linux/.inputrc_linux"
     [ -f ~/.gitconfig ] && cp ~/.gitconfig "$dest/"
