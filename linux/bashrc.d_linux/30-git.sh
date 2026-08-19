@@ -84,20 +84,23 @@ newbranch() {
 }
 
 newrepo() {
-    if [ -z "$1" ]; then
-        echo "Usage: newrepo <repository-name>"
-        return 1
-    fi
+    local repo_name
 
-    mkdir "$1"
-    cd "$1" || return
+    if [ -z "$1" ]; then
+        # No args: turn the current folder into a repo
+        repo_name="$(basename "$PWD")"
+    else
+        repo_name="$1"
+        mkdir "$repo_name"
+        cd "$repo_name" || return
+    fi
 
     touch README.md
     git init
     hub create
     git add README.md
     git commit -m "first commit"
-    git remote add origin "git@github.com:nbrinson2/$1.git"
+    git remote add origin "git@github.com:nbrinson2/${repo_name}.git"
 
     if [ $? -eq 0 ]; then
         git push -u origin master
