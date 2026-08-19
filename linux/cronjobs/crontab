@@ -1,0 +1,16 @@
+# User crontab
+# Install: crontab ~/.cronjobs/crontab
+# Edit:    crontab -e   (then update_config_repo to save)
+
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/nbrinson2/.local/bin
+MAILTO=""
+TZ=America/New_York
+
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12)
+# |  |  |  |  .---- day of week (0 - 6, Sunday=0)
+# |  |  |  |  |
+# *  *  *  *  *  command

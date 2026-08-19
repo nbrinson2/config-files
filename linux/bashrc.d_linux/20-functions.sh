@@ -329,6 +329,11 @@ update_config_local() {
     [ -f "$linux/.bash_profile_linux" ] && cp "$linux/.bash_profile_linux" ~/.bash_profile
     [ -f "$linux/.inputrc_linux" ] && cp "$linux/.inputrc_linux" ~/.inputrc
     [ -f "$src/.gitconfig" ] && cp "$src/.gitconfig" ~/
+    if [ -d "$linux/cronjobs" ]; then
+        mkdir -p ~/.cronjobs
+        cp -a "$linux/cronjobs/." ~/.cronjobs/
+        [ -f ~/.cronjobs/crontab ] && crontab ~/.cronjobs/crontab
+    fi
 
     src
 }
@@ -344,6 +349,11 @@ update_config_repo() {
     [ -f ~/.bash_profile ] && cp ~/.bash_profile "$linux/.bash_profile_linux"
     [ -f ~/.inputrc ] && cp ~/.inputrc "$linux/.inputrc_linux"
     [ -f ~/.gitconfig ] && cp ~/.gitconfig "$dest/"
+    mkdir -p "$linux/cronjobs" ~/.cronjobs
+    if crontab -l >/dev/null 2>&1; then
+        crontab -l > ~/.cronjobs/crontab
+    fi
+    cp -a ~/.cronjobs/. "$linux/cronjobs/"
 
     cd "$dest" || return
 
