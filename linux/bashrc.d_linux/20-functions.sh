@@ -323,7 +323,8 @@ update_config_local() {
     cp "$linux/.bashrc_linux" ~/.bashrc
     if [ -d "$linux/bashrc.d_linux" ]; then
         rm -rf ~/.bashrc.d
-        cp -a "$linux/bashrc.d_linux" ~/.bashrc.d
+        mkdir -p ~/.bashrc.d
+        cp -a "$linux/bashrc.d_linux/." ~/.bashrc.d/
     fi
     [ -f "$linux/.bash_profile_linux" ] && cp "$linux/.bash_profile_linux" ~/.bash_profile
     [ -f "$linux/.inputrc_linux" ] && cp "$linux/.inputrc_linux" ~/.inputrc
