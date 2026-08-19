@@ -125,11 +125,15 @@ assign_new_repo() {
 }
 
 update_config_repo() {
-	cp ~/.bashrc /c/workspace/config-files/
-	cp ~/.bash_profile /c/workspace/config-files/
-	cp ~/.gitconfig /c/workspace/config-files/
+	local dest=/c/workspace/config-files
+	local windows="$dest/windows"
 
-	cd /c/workspace/config-files
+	mkdir -p "$windows"
+	cp ~/.bashrc "$windows/"
+	cp ~/.bash_profile "$windows/"
+	cp ~/.gitconfig "$dest/"
+
+	cd "$dest" || return
 
 	git add .
 	git commit -m "update config files"
@@ -137,13 +141,16 @@ update_config_repo() {
 }
 
 update_config_local() {
-	cd /c/workspace/config-files
-	
+	local src=/c/workspace/config-files
+	local windows="$src/windows"
+
+	cd "$src" || return
+
 	git pull
-	
-	cp /c/workspace/config-files/.bashrc ~/
-	cp /c/workspace/config-files/.bash_profile ~/
-	cp /c/workspace/config-files/.gitconfig ~/
+
+	cp "$windows/.bashrc" ~/
+	cp "$windows/.bash_profile" ~/
+	cp "$src/.gitconfig" ~/
 
 	source
 }

@@ -315,17 +315,18 @@ tx() {
 # Pull config-files repo and restore local shell config
 update_config_local() {
     local src=~/workspace/config-files
+    local linux="$src/linux"
 
     cd "$src" || return
     git pull
 
-    cp "$src/.bashrc_linux" ~/.bashrc
-    if [ -d "$src/bashrc.d_linux" ]; then
+    cp "$linux/.bashrc_linux" ~/.bashrc
+    if [ -d "$linux/bashrc.d_linux" ]; then
         rm -rf ~/.bashrc.d
-        cp -a "$src/bashrc.d_linux" ~/.bashrc.d
+        cp -a "$linux/bashrc.d_linux" ~/.bashrc.d
     fi
-    [ -f "$src/.bash_profile_linux" ] && cp "$src/.bash_profile_linux" ~/.bash_profile
-    [ -f "$src/.inputrc_linux" ] && cp "$src/.inputrc_linux" ~/.inputrc
+    [ -f "$linux/.bash_profile_linux" ] && cp "$linux/.bash_profile_linux" ~/.bash_profile
+    [ -f "$linux/.inputrc_linux" ] && cp "$linux/.inputrc_linux" ~/.inputrc
     [ -f "$src/.gitconfig" ] && cp "$src/.gitconfig" ~/
 
     src
@@ -334,11 +335,13 @@ update_config_local() {
 # Sync local shell config into the config-files git repo
 update_config_repo() {
     local dest=~/workspace/config-files
+    local linux="$dest/linux"
 
-    cp ~/.bashrc "$dest/.bashrc_linux"
-    cp -a ~/.bashrc.d "$dest/bashrc.d_linux"
-    [ -f ~/.bash_profile ] && cp ~/.bash_profile "$dest/.bash_profile_linux"
-    [ -f ~/.inputrc ] && cp ~/.inputrc "$dest/.inputrc_linux"
+    mkdir -p "$linux"
+    cp ~/.bashrc "$linux/.bashrc_linux"
+    cp -a ~/.bashrc.d "$linux/bashrc.d_linux"
+    [ -f ~/.bash_profile ] && cp ~/.bash_profile "$linux/.bash_profile_linux"
+    [ -f ~/.inputrc ] && cp ~/.inputrc "$linux/.inputrc_linux"
     [ -f ~/.gitconfig ] && cp ~/.gitconfig "$dest/"
 
     cd "$dest" || return
