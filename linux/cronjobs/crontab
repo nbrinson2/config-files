@@ -14,3 +14,5 @@ TZ=America/New_York
 # |  |  |  |  .---- day of week (0 - 6, Sunday=0)
 # |  |  |  |  |
 # *  *  *  *  *  command
+
+0 6 * * * /home/nbrinson2/.cronjobs/update_config_repo.sh

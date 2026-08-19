@@ -358,6 +358,8 @@ update_config_repo() {
     cd "$dest" || return
 
     git add .
-    git commit -m "update config files"
-    git push
+    if ! git diff --staged --quiet; then
+        git commit -m "update config files"
+        git push
+    fi
 }
