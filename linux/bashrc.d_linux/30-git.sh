@@ -95,19 +95,32 @@ newrepo() {
         cd "$repo_name" || return
     fi
 
-    touch README.md
-    git init
-    hub create
-    git add README.md
-    git commit -m "first commit"
-    git remote add origin "git@github.com:nbrinson2/${repo_name}.git"
+    local origin_url="git@github.com-personal:nbrinson2/${repo_name}.git"
 
-    if [ $? -eq 0 ]; then
-        git push -u origin master
-    else
-        echo "Failed to add remote repository."
+    # Repo creation goes through the GitHub API, so it needs a token even
+    # though the push itself uses the SSH key.
+    if ! gh auth status >/dev/null 2>&1; then
+        echo "Not logged in to GitHub. Run: gh auth login"
         return 1
     fi
+
+    touch README.md
+    git init
+    git add README.md
+    git commit -m "first commit"
+
+    gh repo create "$repo_name" --private || return 1
+
+    if git remote get-url origin >/dev/null 2>&1; then
+        git remote set-url origin "$origin_url"
+    else
+        git remote add origin "$origin_url" || {
+            echo "Failed to add remote repository."
+            return 1
+        }
+    fi
+
+    git push -u origin master
 }
 
 parse_git_branch() {
