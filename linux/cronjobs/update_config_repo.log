@@ -1,0 +1,9 @@
+[main 7fb2c9e] update config files
+ 4 files changed, 20 insertions(+), 6 deletions(-)
+ create mode 100644 linux/cronjobs/update_config_repo.log
+ mode change 100644 => 100755 linux/cronjobs/update_config_repo.sh
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
