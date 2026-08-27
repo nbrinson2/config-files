@@ -16,8 +16,14 @@ removeFromPath() {
 # Enhanced setjdk for Linux
 # Supports: java17, java21, zulu21, zulu17, 17, 21, and exact folder names
 setjdk() {
+    local quiet=false
+    if [[ "$1" == "-q" ]]; then
+        quiet=true
+        shift
+    fi
+
     if [ $# -ne 1 ]; then
-        echo "Usage: setjdk <version>"
+        echo "Usage: setjdk [-q] <version>"
         echo "Examples:"
         echo "  setjdk 21       → uses java-21-openjdk-amd64 or zulu-21-amd64"
         echo "  setjdk java21   → same"
@@ -86,6 +92,11 @@ setjdk() {
     export JAVA_HOME="$candidate"
     export PATH="$JAVA_HOME/bin:$PATH"
 
-    echo "Switched to: $JAVA_HOME"
-    java -version | head -n 2
+    if [[ "$quiet" != true ]]; then
+        echo "Switched to: $JAVA_HOME"
+        java -version | head -n 2
+    fi
 }
+
+# Default JDK for new shells
+setjdk -q 17
