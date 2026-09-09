@@ -23,4 +23,18 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 
 # Angular CLI (optional)
-# source <(ng completion script)
+# Cached because `ng` takes seconds to start; skipped quietly when the installed
+# CLI is unusable, e.g. a global Angular CLI that requires a newer Node than the
+# one on PATH.
+if command -v ng >/dev/null 2>&1; then
+    _ng_completion_cache="$HOME/.cache/ng-completion.bash"
+    if [ ! -f "$_ng_completion_cache" ] ||
+        [ "$(command -v ng)" -nt "$_ng_completion_cache" ] ||
+        [ "$(command -v node)" -nt "$_ng_completion_cache" ]; then
+        mkdir -p "$(dirname "$_ng_completion_cache")" 2>/dev/null
+        { ng completion script >"$_ng_completion_cache" ||
+            : >"$_ng_completion_cache"; } 2>/dev/null
+    fi
+    [ -s "$_ng_completion_cache" ] && . "$_ng_completion_cache"
+    unset _ng_completion_cache
+fi

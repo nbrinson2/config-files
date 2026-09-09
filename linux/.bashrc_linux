@@ -57,7 +57,3 @@ done
 
 # Local secrets (optional)
 [ -r ~/.bash_secrets ] && . ~/.bash_secrets
-
-
-# Load Angular CLI autocompletion.
-source <(ng completion script)
